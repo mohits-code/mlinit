@@ -12,16 +12,22 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        ref: ${{ github.event.release.tag_name }}
+
+    - name: Debug – list files
+      run: |
+        pwd
+        ls -R .
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
+    - name: Install build backend
       run: |
         python -m pip install --upgrade pip
         pip install build
