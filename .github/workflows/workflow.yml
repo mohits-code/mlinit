@@ -35,6 +35,21 @@ jobs:
     - name: Build package
       run: python -m build
 
+    - name: Debug PYPI token presence
+      run: |
+        token="${{ secrets.PYPI_API_TOKEN }}"
+        if [ -z "$token" ]; then
+          echo "PYPI_API_TOKEN: MISSING or EMPTY"
+          exit 1
+        fi
+        len=${#token}
+        echo "PYPI_API_TOKEN length: $len"
+        if printf '%s' "$token" | grep -q $'\n'; then
+          echo "PYPI_API_TOKEN contains newline(s)"
+        else
+          echo "PYPI_API_TOKEN single-line"
+        fi
+
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
