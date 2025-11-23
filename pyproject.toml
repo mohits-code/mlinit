@@ -28,4 +28,4 @@ mlinit = "mlinit.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["mlinit*"]
+include = ["src"]
