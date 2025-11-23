@@ -28,3 +28,6 @@ mlinit = "cli:main"
 
 [tool.setuptools]
 package_dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
