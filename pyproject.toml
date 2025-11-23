@@ -10,11 +10,13 @@ readme = "README.md"
 authors = [
   { name = "Mohit Singh", email = "mohitsg@seas.upenn.edu" },
 ]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
 requires-python = ">=3.8"
 dependencies = [
     "click>=8.0",
