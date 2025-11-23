@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, PackageLoader, select_autoescape, FileSystemLoader
+import importlib
 from rich.console import Console
+from jinja2 import exceptions as jinja_exceptions
 
 console = Console()
 
@@ -10,8 +12,27 @@ class ProjectGenerator:
         self.config = config
         self.name = config['name']
         self.path = Path.cwd() / self.name
+        # Resolve package name for templates (support both `ml_init` and `mlinit`)
+        pkg_name = None
+        try:
+            importlib.import_module("ml_init")
+            pkg_name = "ml_init"
+        except ModuleNotFoundError:
+            try:
+                importlib.import_module("mlinit")
+                pkg_name = "mlinit"
+            except ModuleNotFoundError:
+                pkg_name = None
+
+        if pkg_name is not None:
+            loader = PackageLoader(pkg_name, "templates")
+        else:
+            # Fallback to templates directory next to this file (for local runs)
+            templates_dir = Path(__file__).parent / "templates"
+            loader = FileSystemLoader(str(templates_dir))
+
         self.env = Environment(
-            loader=PackageLoader("mlinit", "templates"),
+            loader=loader,
             autoescape=select_autoescape()
         )
 
@@ -71,10 +92,15 @@ class ProjectGenerator:
         }
         
         for template_name, output_name in templates_map.items():
-            template = self.env.get_template(template_name)
+            try:
+                template = self.env.get_template(template_name)
+            except jinja_exceptions.TemplateNotFound:
+                console.print(f"[yellow]Template not found:[/yellow] {template_name} — skipping")
+                continue
             content = template.render(config=self.config)
-            
+
             output_path = self.path / output_name
+            output_path.parent.mkdir(parents=True, exist_ok=True)
             with open(output_path, "w") as f:
                 f.write(content)
         

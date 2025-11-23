@@ -1,6 +1,6 @@
 # mlinit 🚀
 
-[![PyPI version](https://badge.fury.io/py/mlinit.svg)](https://badge.fury.io/py/mlinit)
+[![PyPI version](https://badge.fury.io/py/mlinit-cli.svg)](https://badge.fury.io/py/mlinit-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -35,10 +35,10 @@ There are many scaffolders out there. Here is why `mlinit` is different:
 
 ## 📦 Installation
 
-You can install `mlinit` directly from PyPI:
+You can install the CLI package from PyPI (package name: `mlinit-cli`):
 
 ```bash
-pip install mlinit
+pip install mlinit-cli
 ```
 
 > **Tip**: If the `mlinit` command is not found after installation, run it via python:
@@ -46,7 +46,77 @@ pip install mlinit
 > python -m mlinit.cli init --name my_project
 > ```
 
+**CLI Usage — Cross‑platform**
+
+We aim for instructions that work for everyone. Below are cross-platform options to install and run `mlinit` reliably.
+
+- Recommended (best experience): install with `pipx` so the CLI is globally available and isolated:
+
+```bash
+python -m pip install --user pipx
+python -m pipx ensurepath
+pipx install mlinit-cli
+```
+
+- Virtual environment (per-project): create a venv and install the package there:
+
+```bash
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1   # PowerShell (Windows)
+source .venv/bin/activate        # bash/zsh (macOS/Linux)
+pip install mlinit-cli
+```
+
+- Fallback (no PATH changes): run the CLI via Python module entry point anywhere:
+
+```bash
+python -m ml_init.cli init --name my_project
+```
+
+- Troubleshooting PATH issues
+
+    - Windows (common): pip installs user scripts to a directory like:
+
+        `C:\Users\<your-user>\AppData\Local\Packages\PythonSoftwareFoundation.Python.<ver>_qbz5n2kfra8p0\LocalCache\local-packages\Python<ver>\Scripts`
+
+        To add it temporarily in PowerShell:
+
+        ```powershell
+        $env:Path += ';C:\Users\<your-user>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts'
+        ```
+
+        To add it permanently (replace `<your-user>` and then restart PowerShell):
+
+        ```powershell
+        $scriptPath = 'C:\Users\<your-user>\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\Scripts'
+        setx PATH "$($env:Path);$scriptPath"
+        ```
+
+    - macOS / Linux: pip typically installs user scripts to `~/.local/bin`. Add that to your shell profile if it's not already on PATH:
+
+        ```bash
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.profile
+        source ~/.profile
+        ```
+
+- Verify where the CLI was installed
+
+```bash
+python -m pip show mlinit-cli
+python -m site --user-base   # shows base; scripts live in <base>/Scripts (Windows) or <base>/bin (Linux/macOS)
+ls "$(python -m site --user-base)/bin"   # macOS/Linux
+Get-ChildItem "$(python -m site --user-base)\Scripts"   # PowerShell
+```
+
+If you still see `mlinit` not found, use the `python -m` fallback above or install via `pipx` to avoid PATH issues entirely.
+
 ## 🚀 Quick Start
+
+Check available commands or get help:
+
+```bash
+mlinit help
+```
 
 Initialize a new project in seconds:
 
