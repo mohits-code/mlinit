@@ -1,0 +1,23 @@
+import hydra
+from omegaconf import DictConfig, OmegaConf
+import logging
+from pathlib import Path
+
+log = logging.getLogger(__name__)
+
+@hydra.main(version_base=None, config_path="../conf", config_name="config")
+def train(cfg: DictConfig) -> None:
+    log.info(OmegaConf.to_yaml(cfg))
+    log.info("Starting training...")
+    
+    # Example usage of config
+    if "base" in cfg:
+        log.info(f"Training with params: {cfg.base}")
+    
+    # Ensure artifacts dir exists
+    Path("artifacts").mkdir(exist_ok=True)
+    
+    log.info("Training complete.")
+
+if __name__ == "__main__":
+    train()
