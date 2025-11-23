@@ -24,8 +24,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mlinit = "mlinit.cli:main"
+mlinit = "cli:main"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["src"]
+[tool.setuptools]
+package_dir = {"" = "src"}
