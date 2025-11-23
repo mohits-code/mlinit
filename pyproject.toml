@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlinit"
+version = "0.1.0"
+description = "Production-ready ML project scaffolder"
+readme = "README.md"
+authors = [
+  { name = "Mohit Singh", email = "mohitsg@seas.upenn.edu" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "click>=8.0",
+    "rich>=10.0",
+    "jinja2>=3.0",
+    "ruamel.yaml>=0.17",
+]
+
+[project.scripts]
+mlinit = "mlinit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mlinit*"]
